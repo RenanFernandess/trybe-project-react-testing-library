@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from '../renderWithRouter';
 
@@ -25,6 +25,36 @@ describe('Testa o componente <Pokedex.js />', () => {
 
       expect(buttonNext).toBeInTheDocument();
       expect(buttonNext).toHaveTextContent(buttonText);
+    });
+
+    it(`Os próximos pokémons da lista devem ser mostrados, um a um,
+    ao clicar sucessivamente no botão`, () => {
+      renderWithRouter(<App />);
+
+      const nameTestId = 'pokemon-name';
+      const buttonText = /^Próximo pokémon$/i;
+      const buttonNext = screen.getByRole('button', { name: buttonText });
+      const firstPokemonCard = screen.getAllByTestId(nameTestId);
+      const [pikachu] = firstPokemonCard;
+
+      expect(firstPokemonCard).toHaveLength(1);
+      expect(pikachu).toHaveTextContent('Pikachu');
+
+      userEvent.click(buttonNext);
+
+      const secondPokemonCard = screen.getAllByTestId(nameTestId);
+      const [charmander] = secondPokemonCard;
+
+      expect(secondPokemonCard).toHaveLength(1);
+      expect(charmander).toHaveTextContent('Charmander');
+
+      userEvent.click(buttonNext);
+
+      const thirdPokemonCard = screen.getAllByTestId(nameTestId);
+      const [caterpie] = thirdPokemonCard;
+
+      expect(thirdPokemonCard).toHaveLength(1);
+      expect(caterpie).toHaveTextContent('Caterpie');
     });
   });
 
