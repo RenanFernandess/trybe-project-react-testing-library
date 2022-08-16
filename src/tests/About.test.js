@@ -29,4 +29,18 @@ describe('Testa o componente <About.js />.', () => {
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent(titleText);
   });
+
+  it('Teste se a página contém dois parágrafos com texto sobre a Pokédex', () => {
+    renderWithRouter(<About />);
+
+    const paragraphsText = /Pokémons/i;
+    const paragraphs = screen.getAllByText(paragraphsText);
+    const numberOfParagraphs = 2;
+
+    expect(paragraphs).toHaveLength(numberOfParagraphs);
+  });
+
+  it('se a página contém a seguinte imagem de uma Pokédex', () => {
+
+  });
 });
