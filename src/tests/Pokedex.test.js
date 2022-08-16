@@ -15,7 +15,7 @@ describe('Testa o componente <Pokedex.js />', () => {
     expect(title).toHaveTextContent(titleText);
   });
 
-  describe(`Teste se é exibido o próximo pokémon da lista quando o botão
+  describe(`Testa se é exibido o próximo pokémon da lista quando o botão
   Próximo pokémon é clicado`, () => {
     it('O botão deve conter o texto Próximo pokémon', () => {
       renderWithRouter(<App />);
@@ -26,5 +26,13 @@ describe('Testa o componente <Pokedex.js />', () => {
       expect(buttonNext).toBeInTheDocument();
       expect(buttonNext).toHaveTextContent(buttonText);
     });
+  });
+
+  it('Testa se é mostrado apenas um pokémon por vez', () => {
+    renderWithRouter(<App />);
+
+    const pokemonCard = screen.getAllByTestId('pokemon-name');
+
+    expect(pokemonCard).toHaveLength(1);
   });
 });
