@@ -6,7 +6,7 @@ import About from '../pages/About';
 import renderWithRouter from '../renderWithRouter';
 
 describe('Testa o componente <About.js />.', () => {
-  it('se a página contém as informações sobre a Pokédex', () => {
+  it('Testa se a página contém as informações sobre a Pokédex', () => {
     renderWithRouter(<About />);
 
     const paragraphOneText = /^This application simulates/i;
@@ -20,7 +20,7 @@ describe('Testa o componente <About.js />.', () => {
     expect(paragraphTwo).toHaveTextContent(paragraphTwoText);
   });
 
-  it('Teste se a página contém um heading h2 com o texto About Pokédex', () => {
+  it('Testa se a página contém um heading h2 com o texto About Pokédex', () => {
     renderWithRouter(<About />);
 
     const titleText = /^About Pokédex/i;
@@ -28,15 +28,5 @@ describe('Testa o componente <About.js />.', () => {
 
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent(titleText);
-  });
-
-  it('Teste se a página contém dois parágrafos com texto sobre a Pokédex', () => {
-    renderWithRouter(<About />);
-
-    const paragraphsText = /Pokémons/i;
-    const paragraphs = screen.getAllByText(paragraphsText);
-    const numberOfParagraphs = 2;
-
-    expect(paragraphs).toHaveLength(numberOfParagraphs);
   });
 });
