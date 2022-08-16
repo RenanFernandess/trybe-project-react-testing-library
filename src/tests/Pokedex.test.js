@@ -4,8 +4,8 @@ import { screen } from '@testing-library/react';
 import App from '../App';
 import renderWithRouter from '../renderWithRouter';
 
-describe('Teste o componente <Pokedex.js />', () => {
-  it('Teste se a página contém um heading h2 com o texto Encountered pokémons', () => {
+describe('Testa o componente <Pokedex.js />', () => {
+  it('Testa se a página contém um heading h2 com o texto Encountered pokémons', () => {
     renderWithRouter(<App />);
 
     const titleText = /^Encountered pokémons$/i;
@@ -13,5 +13,18 @@ describe('Teste o componente <Pokedex.js />', () => {
 
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent(titleText);
+  });
+
+  describe(`Teste se é exibido o próximo pokémon da lista quando o botão
+  Próximo pokémon é clicado`, () => {
+    it('O botão deve conter o texto Próximo pokémon', () => {
+      renderWithRouter(<App />);
+
+      const buttonText = /^Próximo pokémon$/i;
+      const buttonNext = screen.getByRole('button', { name: buttonText });
+
+      expect(buttonNext).toBeInTheDocument();
+      expect(buttonNext).toHaveTextContent(buttonText);
+    });
   });
 });
