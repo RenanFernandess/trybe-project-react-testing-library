@@ -4,7 +4,7 @@ import renderWithRouter from '../renderWithRouter';
 import { NotFound } from '../pages';
 
 describe('Testa o componente <NotFound.js />', () => {
-  it('Teste se a página contém um heading h2 com o texto Page requested not found',
+  it('Testa se a página contém um heading h2 com o texto Page requested not found',
     () => {
       renderWithRouter(<NotFound />);
 
@@ -15,10 +15,15 @@ describe('Testa o componente <NotFound.js />', () => {
       expect(title).toHaveTextContent(titleText);
     });
 
-  // it('', () => {
-  //   renderWithRouter(<NotFound />);
+  it('Testa se a página mostra a imagem', () => {
+    renderWithRouter(<NotFound />);
 
-  //   const imageAlt = /Pikachu crying because the page requested was not found/i;
-  //   const image = screen.getByRole('img', { name: imageAlt });
-  // });
+    const imageSrc = 'https://media.giphy.com/media/kNSeTs31XBZ3G/giphy.gif';
+    const imageAlt = /Pikachu crying because the page requested was not found/i;
+    const image = screen.getByRole('img', { name: imageAlt });
+
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAccessibleName(imageAlt);
+    expect(image).toHaveAttribute('src', imageSrc);
+  });
 });
