@@ -30,7 +30,7 @@ describe('Testa o componente <About.js />.', () => {
     expect(title).toHaveTextContent(titleText);
   });
 
-  it('Teste se a página contém dois parágrafos com texto sobre a Pokédex', () => {
+  it('Testa se a página contém dois parágrafos com texto sobre a Pokédex', () => {
     renderWithRouter(<About />);
 
     const paragraphsText = /Pokémons/i;
@@ -40,7 +40,15 @@ describe('Testa o componente <About.js />.', () => {
     expect(paragraphs).toHaveLength(numberOfParagraphs);
   });
 
-  it('se a página contém a seguinte imagem de uma Pokédex', () => {
+  it('Testa se a página contém a seguinte imagem de uma Pokédex', () => {
+    renderWithRouter(<About />);
 
+    const imageSrc = 'https://cdn2.bulbagarden.net/upload/thumb/8/86/Gen_I_Pok%C3%A9dex.png/800px-Gen_I_Pok%C3%A9dex.png';
+    const imageAlt = /^Pokédex$/i;
+    const image = screen.getByRole('img', { name: imageAlt });
+
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAccessibleName(imageAlt);
+    expect(image).toHaveAttribute('src', imageSrc);
   });
 });
