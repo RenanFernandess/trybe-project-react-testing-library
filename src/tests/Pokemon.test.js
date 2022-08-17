@@ -16,6 +16,8 @@ const linkText = /^More details$/i;
 const linkUrl = '/pokemons/25';
 const pokemonDetailsTitleText = /Pikachu Details/i;
 const pokemonDetailsPathName = '/pokemons/25';
+const favoriteImageAlt = /Pikachu is marked as favorite/i;
+const favoriteImageSrc = '/star-icon.svg';
 
 describe('Testa o componente <Pokemon.js />', () => {
   it('Testa se é renderizado um card com as informações de determinado pokémon',
@@ -79,4 +81,14 @@ describe('Testa o componente <Pokemon.js />', () => {
 
     expect(pathname).toBe(pokemonDetailsPathName);
   });
+
+  it('Testa se existe um ícone de estrela nos pokémons favoritados',
+    () => {
+      renderWithRouter(<Pokemon pokemon={ pokemon } isFavorite />);
+
+      const favoriteImage = screen.getByRole('img', { name: favoriteImageAlt });
+
+      expect(favoriteImage).toBeInTheDocument();
+      expect(favoriteImage).toHaveAttribute('src', favoriteImageSrc);
+    });
 });
