@@ -217,6 +217,22 @@ describe('Testa o componente <Pokedex.js />', () => {
         expect(buttonNext).toBeDisabled();
         expect(pokemonType).toHaveTextContent(/bug/i);
       });
+
+      it('Testa filtro Poison', () => {
+        renderWithRouter(<App />);
+
+        const poison = /^Poison$/i;
+        const filterButton = screen.getByRole('button', { name: poison });
+
+        userEvent.click(filterButton);
+
+        const buttonText = /^Próximo pokémon$/i;
+        const buttonNext = screen.getByRole('button', { name: buttonText });
+        const pokemonType = screen.getByTestId(typeTestId);
+
+        expect(buttonNext).toBeDisabled();
+        expect(pokemonType).toHaveTextContent(/poison/i);
+      });
     });
   });
 });
