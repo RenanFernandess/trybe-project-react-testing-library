@@ -1,9 +1,10 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
+import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
 import App from '../App';
 
+const URL = '/pokemons/25';
 const pokemonDetailsTitleText = /^Pikachu Details$/i;
 const titleSummaryText = /^summary$/i;
 const pokemonSummaryText = /^This intelligent Pokémon roasts hard berries with/i;
@@ -12,12 +13,13 @@ const gameLocationsTitleText = /^Game Locations of Pikachu$/i;
 const pokemonLocationImageAlt = /^Pikachu location$/i;
 const locationImageOneSrc = 'https://cdn2.bulbagarden.net/upload/0/08/Kanto_Route_2_Map.png';
 const locationImageTwoSrc = 'https://cdn2.bulbagarden.net/upload/b/bd/Kanto_Celadon_City_Map.png';
+const checkboxText = /^Pokémon favoritado\?$/i;
 
 describe('Testa o componente <PokemonDetails.js />', () => {
   it('Testa se as informações detalhadas do pokémon selecionado são mostradas na tela',
     () => {
       const { history } = renderWithRouter(<App />);
-      history.push('/pokemons/25');
+      history.push(URL);
 
       const pokemonDetailsTitle = screen.getByRole(
         'heading',
@@ -37,7 +39,7 @@ describe('Testa o componente <PokemonDetails.js />', () => {
     as localizações do pokémon`,
   () => {
     const { history } = renderWithRouter(<App />);
-    history.push('/pokemons/25');
+    history.push(URL);
 
     const gamesLocationsTitle = screen.getByRole(
       'heading',
@@ -55,4 +57,21 @@ describe('Testa o componente <PokemonDetails.js />', () => {
     expect(locationImageTwo).toHaveAttribute('src', locationImageTwoSrc);
     expect(gamesLocationsTitle).toBeInTheDocument();
   });
+
+  it('Testa se o usuário pode favoritar um pokémon através da página de detalhes',
+    () => {
+      const { history } = renderWithRouter(<App />);
+      history.push(URL);
+
+      const checkbox = screen.getByRole('checkbox', { name: checkboxText });
+
+      expect(checkbox).toBeInTheDocument();
+      expect(checkbox).not.toBeChecked();
+
+      userEvent.click(checkbox);
+      expect(checkbox).toBeChecked();
+
+      userEvent.click(checkbox);
+      expect(checkbox).not.toBeChecked();
+    });
 });
