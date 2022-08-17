@@ -11,9 +11,11 @@ const typeTestId = 'pokemon-type';
 const weightTestId = 'pokemon-weight';
 const imageAlt = /Pikachu sprite/i;
 const imageSrc = 'https://cdn2.bulbagarden.net/upload/b/b2/Spr_5b_025_m.png';
+const linkText = /^More details$/i;
+const linkUrl = '/pokemons/25';
 
-describe('Teste o componente <Pokemon.js />', () => {
-  it('Teste se é renderizado um card com as informações de determinado pokémon',
+describe('Testa o componente <Pokemon.js />', () => {
+  it('Testa se é renderizado um card com as informações de determinado pokémon',
     () => {
       renderWithRouter(<Pokemon pokemon={ pokemon } isFavorite={ false } />);
 
@@ -31,4 +33,16 @@ describe('Teste o componente <Pokemon.js />', () => {
       expect(pokemonWeight).toHaveTextContent(/Average weight: 6.0 kg/i);
       expect(pokemonImage).toHaveAttribute('src', imageSrc);
     });
+
+  it(`Testa se o card do pokémon indicado na Pokédex contém
+    um link de navegação para exibir detalhes deste pokémon.
+    O link deve possuir a URL /pokemons/<id>, onde <id> é o id do pokémon exibido`,
+  () => {
+    renderWithRouter(<Pokemon pokemon={ pokemon } isFavorite={ false } />);
+
+    const link = screen.getByRole('link', { name: linkText });
+
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', linkUrl);
+  });
 });
