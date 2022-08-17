@@ -15,6 +15,7 @@ const imageSrc = 'https://cdn2.bulbagarden.net/upload/b/b2/Spr_5b_025_m.png';
 const linkText = /^More details$/i;
 const linkUrl = '/pokemons/25';
 const pokemonDetailsTitleText = /Pikachu Details/i;
+const pokemonDetailsPathName = '/pokemons/25';
 
 describe('Testa o componente <Pokemon.js />', () => {
   it('Testa se é renderizado um card com as informações de determinado pokémon',
@@ -63,5 +64,19 @@ describe('Testa o componente <Pokemon.js />', () => {
     );
 
     expect(pokemonDetailsTitle).toBeInTheDocument();
+  });
+
+  it(`Teste também se a URL exibida no navegador muda para /pokemon/<id>,
+  onde <id> é o id do pokémon cujos detalhes se deseja ver`,
+  () => {
+    const { history } = renderWithRouter(<App />);
+
+    const link = screen.getByRole('link', { name: linkText });
+
+    userEvent.click(link);
+
+    const { location: { pathname } } = history;
+
+    expect(pathname).toBe(pokemonDetailsPathName);
   });
 });
