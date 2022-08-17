@@ -7,6 +7,7 @@ import { Pokedex } from '../pages';
 import pokemons from '../data';
 
 const nameTestId = 'pokemon-name';
+const typeTestId = 'pokemon-type';
 
 describe('Testa o componente <Pokedex.js />', () => {
   it('Testa se a página contém um heading h2 com o texto Encountered pokémons', () => {
@@ -171,7 +172,6 @@ describe('Testa o componente <Pokedex.js />', () => {
 
         userEvent.click(filterElectricButton);
 
-        const typeTestId = 'pokemon-type';
         const buttonText = /^Próximo pokémon$/i;
         const buttonNext = screen.getByRole('button', { name: buttonText });
         const pokemonType = screen.getByTestId(typeTestId);
@@ -188,7 +188,6 @@ describe('Testa o componente <Pokedex.js />', () => {
 
         userEvent.click(filterButton);
 
-        const typeTestId = 'pokemon-type';
         const firstPokemonType = screen.getByTestId(typeTestId);
 
         expect(firstPokemonType).toHaveTextContent(/fire/i);
@@ -201,6 +200,22 @@ describe('Testa o componente <Pokedex.js />', () => {
         const secondPokemonType = screen.getByTestId(typeTestId);
 
         expect(secondPokemonType).toHaveTextContent(/fire/i);
+      });
+
+      it('Testa filtro Bug', () => {
+        renderWithRouter(<App />);
+
+        const bug = /^Bug$/i;
+        const filterButton = screen.getByRole('button', { name: bug });
+
+        userEvent.click(filterButton);
+
+        const buttonText = /^Próximo pokémon$/i;
+        const buttonNext = screen.getByRole('button', { name: buttonText });
+        const pokemonType = screen.getByTestId(typeTestId);
+
+        expect(buttonNext).toBeDisabled();
+        expect(pokemonType).toHaveTextContent(/bug/i);
       });
     });
   });
