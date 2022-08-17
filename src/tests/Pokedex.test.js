@@ -6,6 +6,8 @@ import renderWithRouter from '../renderWithRouter';
 import { Pokedex } from '../pages';
 import pokemons from '../data';
 
+const nameTestId = 'pokemon-name';
+
 describe('Testa o componente <Pokedex.js />', () => {
   it('Testa se a página contém um heading h2 com o texto Encountered pokémons', () => {
     renderWithRouter(<App />);
@@ -33,7 +35,6 @@ describe('Testa o componente <Pokedex.js />', () => {
     ao clicar sucessivamente no botão`, () => {
       renderWithRouter(<App />);
 
-      const nameTestId = /^pokemon-name$/i;
       const buttonText = /^Próximo pokémon$/i;
       const buttonNext = screen.getByRole('button', { name: buttonText });
       const firstPokemonCard = screen.getAllByTestId(nameTestId);
@@ -80,7 +81,6 @@ describe('Testa o componente <Pokedex.js />', () => {
         />,
       );
 
-      const nameTestId = 'pokemon-name';
       const buttonText = /^Próximo pokémon$/i;
       const buttonNext = screen.getByRole('button', { name: buttonText });
       const firstPokemonCard = screen.getAllByTestId(nameTestId);
@@ -163,7 +163,7 @@ describe('Testa o componente <Pokedex.js />', () => {
     describe(`A partir da seleção de um botão de tipo,
       a Pokédex deve circular somente pelos pokémons daquele tipo`,
     () => {
-      it('Testa filtro eletrico', () => {
+      it('Testa filtro Electric', () => {
         renderWithRouter(<App />);
 
         const electric = /^Electric$/i;
@@ -178,6 +178,29 @@ describe('Testa o componente <Pokedex.js />', () => {
 
         expect(buttonNext).toBeDisabled();
         expect(pokemonType).toHaveTextContent(/electric/i);
+      });
+
+      it('Testa filtro Fire', () => {
+        renderWithRouter(<App />);
+
+        const fire = /^Fire$/i;
+        const filterButton = screen.getByRole('button', { name: fire });
+
+        userEvent.click(filterButton);
+
+        const typeTestId = 'pokemon-type';
+        const firstPokemonType = screen.getByTestId(typeTestId);
+
+        expect(firstPokemonType).toHaveTextContent(/fire/i);
+
+        const buttonText = /^Próximo pokémon$/i;
+        const buttonNext = screen.getByRole('button', { name: buttonText });
+
+        userEvent.click(buttonNext);
+
+        const secondPokemonType = screen.getByTestId(typeTestId);
+
+        expect(secondPokemonType).toHaveTextContent(/fire/i);
       });
     });
   });
