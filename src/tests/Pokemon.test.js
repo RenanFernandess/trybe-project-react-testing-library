@@ -1,9 +1,10 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
 import pokemons from '../data';
-// import userEvent from '@testing-library/user-event';
 import Pokemon from '../components/Pokemon';
+import App from '../App';
 
 const [pokemon] = pokemons;
 const nameTestId = 'pokemon-name';
@@ -13,6 +14,7 @@ const imageAlt = /Pikachu sprite/i;
 const imageSrc = 'https://cdn2.bulbagarden.net/upload/b/b2/Spr_5b_025_m.png';
 const linkText = /^More details$/i;
 const linkUrl = '/pokemons/25';
+const pokemonDetailsTitleText = /Pikachu Details/i;
 
 describe('Testa o componente <Pokemon.js />', () => {
   it('Testa se é renderizado um card com as informações de determinado pokémon',
@@ -44,5 +46,22 @@ describe('Testa o componente <Pokemon.js />', () => {
 
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', linkUrl);
+  });
+
+  it(`Testa se ao clicar no link de navegação do pokémon,
+  é feito o redirecionamento da aplicação para a página de detalhes de pokémon`,
+  () => {
+    renderWithRouter(<App />);
+
+    const link = screen.getByRole('link', { name: linkText });
+
+    userEvent.click(link);
+
+    const pokemonDetailsTitle = screen.getByRole(
+      'heading',
+      { level: 2, name: pokemonDetailsTitleText },
+    );
+
+    expect(pokemonDetailsTitle).toBeInTheDocument();
   });
 });
