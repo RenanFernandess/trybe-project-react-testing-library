@@ -33,7 +33,7 @@ describe('Testa o componente <Pokedex.js />', () => {
     ao clicar sucessivamente no botão`, () => {
       renderWithRouter(<App />);
 
-      const nameTestId = 'pokemon-name';
+      const nameTestId = /^pokemon-name$/i;
       const buttonText = /^Próximo pokémon$/i;
       const buttonNext = screen.getByRole('button', { name: buttonText });
       const firstPokemonCard = screen.getAllByTestId(nameTestId);
@@ -113,5 +113,51 @@ describe('Testa o componente <Pokedex.js />', () => {
     const pokemonCard = screen.getAllByTestId('pokemon-name');
 
     expect(pokemonCard).toHaveLength(1);
+  });
+
+  describe('Teste se a Pokédex tem os botões de filtro', () => {
+    it('Deve existir um botão de filtragem para cada tipo de pokémon, sem repetição',
+      () => {
+        renderWithRouter(<App />);
+
+        const numberOfButtons = 7;
+        const testIdFilterButtons = 'pokemon-type-button';
+        const filterButtons = screen.getAllByTestId(testIdFilterButtons);
+
+        expect(filterButtons).toHaveLength(numberOfButtons);
+
+        const [
+          electric,
+          fire,
+          bug,
+          poison,
+          pyschic,
+          normal,
+          dragon,
+        ] = [
+          /^Electric$/i,
+          /^Fire$/i,
+          /^Bug$/i,
+          /^Poison$/i,
+          /^Psychic$/i,
+          /^Normal$/i,
+          /^Dragon$/i,
+        ];
+        const filterElectric = screen.getByRole('button', { name: electric });
+        const filterFire = screen.getByRole('button', { name: fire });
+        const filterBug = screen.getByRole('button', { name: bug });
+        const filterPoison = screen.getByRole('button', { name: poison });
+        const filterPsychic = screen.getByRole('button', { name: pyschic });
+        const filterNormal = screen.getByRole('button', { name: normal });
+        const filterDrago = screen.getByRole('button', { name: dragon });
+
+        expect(filterElectric).toBeInTheDocument();
+        expect(filterFire).toBeInTheDocument();
+        expect(filterBug).toBeInTheDocument();
+        expect(filterPoison).toBeInTheDocument();
+        expect(filterPsychic).toBeInTheDocument();
+        expect(filterNormal).toBeInTheDocument();
+        expect(filterDrago).toBeInTheDocument();
+      });
   });
 });
