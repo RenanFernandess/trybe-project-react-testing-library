@@ -115,8 +115,8 @@ describe('Testa o componente <Pokedex.js />', () => {
     expect(pokemonCard).toHaveLength(1);
   });
 
-  describe('Teste se a Pokédex tem os botões de filtro', () => {
-    it('Deve existir um botão de filtragem para cada tipo de pokémon, sem repetição',
+  describe('Testa se a Pokédex tem os botões de filtro', () => {
+    it('Deve existir um botão de filtragem para cada tipod pokémon,sem repetição',
       () => {
         renderWithRouter(<App />);
 
@@ -159,5 +159,26 @@ describe('Testa o componente <Pokedex.js />', () => {
         expect(filterNormal).toBeInTheDocument();
         expect(filterDrago).toBeInTheDocument();
       });
+
+    describe(`A partir da seleção de um botão de tipo,
+      a Pokédex deve circular somente pelos pokémons daquele tipo`,
+    () => {
+      it('Testa filtro eletrico', () => {
+        renderWithRouter(<App />);
+
+        const electric = /^Electric$/i;
+        const filterElectricButton = screen.getByRole('button', { name: electric });
+
+        userEvent.click(filterElectricButton);
+
+        const typeTestId = 'pokemon-type';
+        const buttonText = /^Próximo pokémon$/i;
+        const buttonNext = screen.getByRole('button', { name: buttonText });
+        const pokemonType = screen.getByTestId(typeTestId);
+
+        expect(buttonNext).toBeDisabled();
+        expect(pokemonType).toHaveTextContent(/electric/i);
+      });
+    });
   });
 });
