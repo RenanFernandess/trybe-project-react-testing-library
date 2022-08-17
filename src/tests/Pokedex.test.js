@@ -3,6 +3,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from '../renderWithRouter';
+import { Pokedex } from '../pages';
+import pokemons from '../data';
 
 describe('Testa o componente <Pokedex.js />', () => {
   it('Testa se a página contém um heading h2 com o texto Encountered pokémons', () => {
@@ -55,6 +57,53 @@ describe('Testa o componente <Pokedex.js />', () => {
 
       expect(thirdPokemonCard).toHaveLength(1);
       expect(caterpie).toHaveTextContent('Caterpie');
+    });
+
+    it(`O primeiro pokémon da lista deve ser mostrado ao clicar no botão,
+    se estiver no último pokémon da lista`, () => {
+      const FavoritesPokemon = {
+        4: false,
+        10: false,
+        23: false,
+        25: false,
+        65: false,
+        78: false,
+        143: false,
+        148: false,
+        151: false,
+      };
+      const twoPokemons = pokemons.slice(0, 2);
+      renderWithRouter(
+        <Pokedex
+          isPokemonFavoriteById={ FavoritesPokemon }
+          pokemons={ twoPokemons }
+        />,
+      );
+
+      const nameTestId = 'pokemon-name';
+      const buttonText = /^Próximo pokémon$/i;
+      const buttonNext = screen.getByRole('button', { name: buttonText });
+      const firstPokemonCard = screen.getAllByTestId(nameTestId);
+      const [pikachu] = firstPokemonCard;
+
+      expect(firstPokemonCard).toHaveLength(1);
+      expect(pikachu).toHaveTextContent('Pikachu');
+
+      userEvent.click(buttonNext);
+
+      const secondPokemonCard = screen.getAllByTestId(nameTestId);
+      const [charmander] = secondPokemonCard;
+
+      expect(secondPokemonCard).toHaveLength(1);
+      expect(charmander).toHaveTextContent('Charmander');
+
+      userEvent.click(buttonNext);
+
+      const startPokemonCard = screen.getAllByTestId(nameTestId);
+      const [startpikachu] = startPokemonCard;
+
+      expect(startPokemonCard).toHaveLength(1);
+      expect(startpikachu).toHaveTextContent('Pikachu');
     });
   });
 
